@@ -1,0 +1,20 @@
+{
+  "articles": [
+    {
+      "path": "about.html",
+      "title": "About this site",
+      "description": "Some additional details about the website",
+      "author": [],
+      "contents": "\r\n\r\n\r\n\r\n",
+      "last_modified": "2021-01-24T16:00:38-08:00"
+    },
+    {
+      "path": "index.html",
+      "title": "Laurel Wee",
+      "author": [],
+      "contents": "\r\n\r\n          \r\n          \r\n          Laurel Wee\r\n          \r\n          \r\n          Home\r\n          About\r\n          Laurel\r\n          ☰\r\n          \r\n          \r\n      \r\n        \r\n          \r\n            \r\n              \r\n            \r\n              Laurel Wee\r\n            \r\n            \r\n              \r\n                \r\n                    \r\n                      \r\n                        LinkedIn\r\n                      \r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      \r\n                        GitHub\r\n                      \r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      \r\n                        Email\r\n                      \r\n                    \r\n                  \r\n                                  \r\n            \r\n          \r\n        \r\n        \r\n        \r\n          \r\n            I am a Master’s student at UCSB at the Bren School of Environmental Science and Management. I am specializing in Conservation Planning with a focus in Strategic Environmental Communication and Media.\r\n          \r\n        \r\n      \r\n    \r\n\r\n    \r\n      \r\n        \r\n          \r\n            \r\n              \r\n            \r\n              Laurel Wee\r\n            \r\n            \r\n              \r\n                \r\n                                    \r\n                    \r\n                      LinkedIn\r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      GitHub\r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      Email\r\n                    \r\n                  \r\n                                  \r\n              \r\n            \r\n            \r\n              I am a Master’s student at UCSB at the Bren School of Environmental Science and Management. I am specializing in Conservation Planning with a focus in Strategic Environmental Communication and Media.\r\n            \r\n        \r\n      \r\n    \r\n\r\n    \r\n    \r\n    ",
+      "last_modified": "2021-01-24T16:12:41-08:00"
+    }
+  ],
+  "collections": []
+}
