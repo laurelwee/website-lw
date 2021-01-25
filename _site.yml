@@ -9,6 +9,4 @@ navbar:
       href: index.html
     - text: "About"
       href: about.html
-    - text: "Laurel"
-      href: laurel.html
 site: distill::distill_website
