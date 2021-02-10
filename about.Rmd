@@ -1,10 +1,13 @@
 ---
-title: "About this site"
+title: "About Laurel aka me!"
 description: |
-  Some additional details about the website
+  Learn more about me!
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+I am interested in working in land management with a focus in making access to green spaces more equitable. During my time at the Bren school of Environmental Science and Management I am working on my knowledge of conservation planning with an interest in learning more about native plants and fire ecology. My focus is in Strategic Environmental Communication and Media, this is an integral part in effectively sharing science information and helps to ensure that our environmental solutions are collaborative and inclusive of all stakeholders. My favorite terrestrial ecosystems are coastal chaparral and  redwood forests.
+
+I am also passionate in Marine Conservation. I am excited to explore opportunities to increase my understanding of one of the most productive and endangered ecosystems. I have advanced open water SCUBA and level-1 freediver certifications and hope to use these skills to help in data collections.

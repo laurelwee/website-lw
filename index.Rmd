@@ -14,4 +14,4 @@ output:
 site: distill::distill_website
 ---
 
-I am a Master's student at UCSB at the Bren School of Environmental Science and Management. I am specializing in Conservation Planning with a focus in Strategic Environmental Communication and Media.
+Laurel Wee is Master's student at UCSB at the Bren School of Environmental Science and Management. She is specializing in Conservation Planning with a focus in Strategic Environmental Communication and Media. She hopes to continue learning about native plant restoration and fire prevention and recovery.
