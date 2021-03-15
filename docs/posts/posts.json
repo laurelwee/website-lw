@@ -1,22 +1,5 @@
 [
   {
-    "path": "posts/2021-03-15-animation-of-plastic-contributors/",
-    "title": "Animation of Plastic Contributors",
-    "description": "IN PROGRESSFor week 5 of TidyTuesday of 2021 we wrangled and visualized Global Plastics Data. I chose to compare the total plastic counts of the top 5 contributors in 2019 and 2020.",
-    "author": [
-      {
-        "name": "Laurel Wee",
-        "url": {}
-      }
-    ],
-    "date": "2021-03-15",
-    "categories": [],
-    "contents": "\r\n\r\n\r\nexpand\r\n\r\ntuesdata <- tidytuesdayR::tt_load(2021, week = 5)\r\n\r\n\r\n\r\nAnimation of the top 5 global plastice contributors from 2019-2020\r\n\r\nexpand\r\n\r\nplastics <- tuesdata$plastics \r\nplastic_top5<- plastics%>% \r\n  select(country, year, parent_company, grand_total) %>% \r\n  filter(parent_company != \"Grand Total\", country != \"EMPTY\") %>% \r\n  group_by(country, year) %>% \r\n  summarize(total_count = sum(grand_total, na.rm = TRUE)) %>% \r\n  group_by(year) %>% \r\n  mutate(rank = rank(-total_count)) %>% \r\n  arrange(-total_count) %>% \r\n  slice_max(total_count, n=5)\r\n  \r\nvolunteers_event <-plastics %>% \r\n  select(country, year, volunteers, num_events) %>% \r\n  group_by(country, year) %>% \r\n  mutate(vol_per_event = volunteers/num_events) %>%\r\n  summarize(avg_vol_per_event= mean(vol_per_event)) %>% \r\n  arrange(-avg_vol_per_event) %>%\r\n  group_by(year) %>% \r\n  slice_max(avg_vol_per_event, n=5) %>% \r\n  mutate(rank = rank(-avg_vol_per_event))\r\n\r\ntop5_event <-plastics %>% \r\n  select(country, year, num_events) %>% \r\n  filter(country!=\"EMPTY\") %>% \r\n  group_by(country, year) %>% \r\n  summarize(events = mean(num_events, na.rm = TRUE)) %>% \r\n  arrange(-events) %>%\r\n  group_by(year) %>% \r\n  slice_max(events, n=5) %>% \r\n  mutate(rank = rank(-events))\r\n\r\n\r\n\r\n\r\n\r\nexpand\r\n\r\ntop5_plastic_plot <- ggplot(plastic_top5) +\r\n  geom_col(aes(x=rank, y=total_count, fill=country))+\r\n  labs(y = \"Total Plastic Count\", x= \"Country Rank\" , subtitle = \"Top 5 Plastic Contributors from 2019-2020\")+\r\n  transition_time(year)+\r\n  ggtitle('{closest_state}')+\r\n  transition_states(year,transition_length = 2, state_length = 2)+\r\n  ease_aes(\"linear\") +\r\n  enter_fade() +\r\n  exit_fade()\r\n\r\ntop5_vol_plot <- ggplot(volunteers_event) +\r\n  geom_col(aes(x=rank, y=avg_vol_per_event, fill=country))+\r\n   labs(y = \"Average Volunteer Count per Event\", subtitle = \"Top 5 Plastic Contributors from 2019-2020\")+\r\n  transition_time(year)+\r\n  ggtitle('{closest_state}')+\r\n  transition_states(year,transition_length = 2, state_length = 2)+\r\n  ease_aes(\"linear\") +\r\n  enter_fade() +\r\n  exit_fade()\r\n  \r\ntop5_event_plot <- ggplot(top5_event) +\r\n  geom_col(aes(x=rank, y=events, fill=country))+\r\n   labs(y = \"Number of Events\", x= \"Country Rank\", subtitle = \"Top 5 Plastic Clean-up Events from 2019-2020\")+\r\n  transition_time(year)+\r\n  ggtitle('{closest_state}')+\r\n  transition_states(year,transition_length = 2, state_length = 2)+\r\n  ease_aes(\"linear\") +\r\n  enter_fade() +\r\n  exit_fade()\r\n\r\n#combined_plastic_vol <-(top5_plastic_plot|top5_vol_plot)\r\n\r\nanim_save(\"top5_plastic_animation.gif\", top5_plastic_plot)\r\nanim_save(\"top5_vol_animation.gif\", top5_vol_plot)\r\nanim_save(\"top5_event_animation.gif\", top5_event_plot)\r\n\r\n\r\n\r\n\r\n\r\nexpand\r\n\r\n# save each animation as individual frames\r\n# each frame will be saved as a PNG image\r\ntop5_plastic_gif <- animate(top5_plastic_plot, \r\n                      device = \"png\",\r\n                      width = 400, \r\n                      height = 400, \r\n                      renderer = file_renderer(\"./gganim\", prefix = \"top5_plastic\", overwrite = TRUE))\r\ntop5_event_gif <- animate(top5_event_plot, \r\n                     device = \"png\",\r\n                     width = 400, \r\n                     height = 400,\r\n                     renderer = file_renderer(\"./gganim\", prefix = \"top5_event\", overwrite = TRUE))\r\n                           \r\n                                                             # stitch two animations together\r\n# read the first image (frame) of each animation\r\na <- image_read(top5_plastic_gif[[1]])\r\nb <- image_read(top5_event_gif[[1]])\r\n# combine the two images into a single image\r\ncombined <- image_append(c(a,b))\r\nnew_gif <- c(combined)\r\nfor(i in 2:99){ # combine images frame by frame\r\n  a <- image_read(top5_plastic_gif[[i]])\r\n  b <- image_read(top5_event_gif[[i]])\r\n  combined <- image_append(c(a,b))\r\n  new_gif <- c(new_gif,combined)\r\n}\r\n\r\n# make an animation of the combined images\r\ncombined_gif <- image_animate(new_gif)\r\n# save as gif\r\nimage_write(combined_gif, \"plastic_events.gif\")\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
-    "preview": {},
-    "last_modified": "2021-03-15T16:08:55-07:00",
-    "input_file": {}
-  },
-  {
     "path": "posts/2021-03-15-text-analysis/",
     "title": "Text Analysis",
     "description": "For EMS 244 I did a text analysis of one of my favorite books. The task included wrangling text from the book and doing a sentiment analysis. I highly recommmend *The Kingkiller Chronicle* book series if you enjoy reading fantasy. Reading the coder's notes that I included will not spoil the first book anynmore than a backcover would. If you are someone that avoids starting unfinished series you may want to wait to read the first two, however, I believe it still worth the read.",
@@ -82,7 +65,7 @@
     "contents": "\r\n\r\n\r\n\r\n\r\n\r\n",
     "preview": {},
     "last_modified": "2021-03-15T16:53:41-07:00",
-    "input_file": "my-resume.utf8.md"
+    "input_file": {}
   },
   {
     "path": "posts/2021-03-14-group-work-salmon-analysis/",

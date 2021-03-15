@@ -7,7 +7,7 @@ links:
   - label: GitHub
     url: "https://github.com/laurelwee"
   - label: Email
-    url: "laurelwee@bren.ucsb.edu"
+    url: "mailto: laurelwee@bren.ucsb.edu"
   - label: "Resume"
     url: "https://laurelwee.github.io/website-lw/posts/2021-02-15-my-resume/"
 output: postcards::trestles
