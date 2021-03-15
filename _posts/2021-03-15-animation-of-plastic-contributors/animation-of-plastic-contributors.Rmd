@@ -1,7 +1,8 @@
 ---
 title: "Animation of Plastic Contributors"
 description: |
-  IN PROGRESSFor week 5 of TidyTuesday of 2021 we wrangled and visualized Global Plastics Data. I chose to compare the total plastic counts of the top 5 contributors in 2019 and 2020.
+  IN PROGRESS For week 5 of TidyTuesday of 2021 we wrangled and visualized Global Plastics Data. I chose to compare the total plastic counts of the top 5 contributors in 2019 and 2020.
+draft: true
 author:
   - name: Laurel Wee
     url: {}
@@ -10,7 +11,7 @@ output:
   distill::distill_article:
     self_contained: false
     code_folding: expand
-draft: TRUE
+
 ---
 
 
