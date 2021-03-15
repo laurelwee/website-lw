@@ -10,7 +10,7 @@ output:
   distill::distill_article:
     self_contained: false
     code_folding: expand
-    draft: TRUE
+draft: TRUE
 ---
 
 
