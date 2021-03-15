@@ -1,0 +1,126 @@
+---
+title: "Text Analysis"
+description: |
+  For EMS 244 I did a text analysis of one of my favorite books. The task included wrangling text from the book and doing a sentiment analysis. I highly recommmend *The Kingkiller Chronicle* book series if you enjoy reading fantasy. Reading the coder's notes that I included will not spoil the first book anynmore than a backcover would. If you are someone that avoids starting unfinished series you may want to wait to read the first two, however, I believe it still worth the read. 
+author:
+  - name: Laurel Wee
+    url: {}
+date: 03-15-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: expand
+---
+
+## A3 Task 3: Text wrangling and analysis
+### Name of the Wind by Patrick Rothfuss
+date: 2/24/2021
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(tidytext)
+library(textdata)
+library(pdftools)
+library(ggwordcloud)
+library(here)
+library(wordstonumbers)
+library(textclean)
+```
+
+```{r, message= FALSE, cache = TRUE}
+# Read in pdf for analysis, choose an amazing book, such as 'Name of the Wind'
+kvothe_text <- pdf_text(here("data","the-name-of-the-wind.pdf"))
+
+# Tidy the data and turn into a data frame, create column for the full text separated by page and line `/n`
+kvothe_tidy <- data.frame(kvothe_text) %>% 
+  slice(-(1:16)) %>% 
+  mutate(text_full = str_split(kvothe_text, pattern = '\\n')) %>% 
+  unnest(text_full) %>% 
+  mutate(text_full = str_trim(text_full)) 
+
+# Turn the tidy data into parts that you wan to work with
+kvothe_df <- kvothe_tidy %>% 
+  mutate(chapter = case_when(
+    str_detect(text_full, "CHAPTER") ~ text_full, # Separated by Chapter
+    TRUE ~ NA_character_
+  )) %>% 
+  fill(chapter) %>% 
+  separate(col = chapter, into = c("ch", "no"), sep = " ")  #%>% 
+  #select(-kvothe_text) # this broke something
+#%>% # No longer need the full page text column
+ # mgsub(no, replace_number(seq_len(1:92)))
+
+# Tokenize the data and single out each word
+kvothe_tokens <- kvothe_df %>% 
+  unnest_tokens(word, text_full)
+```
+### Most frequently used words
+```{r, message=FALSE}
+kvothe_wordcount <- kvothe_tokens %>% 
+  count(no, word) 
+
+kvothe_nostop_wordcount <- kvothe_tokens %>% 
+  anti_join(stop_words)%>% 
+  count(no, word)
+
+top_5_words <- kvothe_nostop_wordcount %>% 
+  group_by(no) %>% 
+  arrange(-n) %>% 
+  slice(1:5)
+```
+```{r}
+#ggplot(data = top_5_words, aes(x = word, y = n)) +
+ # geom_col(fill = "blue") +
+  #facet_wrap(~no, scales = "free") +
+  #coord_flip()
+```
+```{r, message=FALSE}
+# Count the most frequently used words and select the top ones, DO NOT include the authors name and "ing" 
+top_100 <- kvothe_tokens %>% 
+  anti_join(stop_words) %>% 
+  ungroup() %>% 
+  count(word) %>% 
+  arrange(-n) %>% 
+  filter(word != "patrick" & word != "rothfuss" & word != "ing") %>% 
+  slice(1:100)
+
+# Word cloud the most used words because I can't do a by chapter analysis yet
+name_wind_cloud <- ggplot(data = top_100, aes(label = word)) +
+  geom_text_wordcloud(aes(
+    color = n, 
+    size = n)) +
+  scale_size_area(max_size = 10) +
+  scale_color_gradientn(colors = c("turquoise","magenta","red")) +
+  theme_minimal()
+name_wind_cloud
+```
+
+#### Coder's comment:
+This word frequency analysis *Name of the Wind* by Patrick Rothfuss is book one of the King Killer Chronicles. It is a story of a young man, Kvothe, told by an old innkeeper who has lost touch with who he one was and is now called Kote. The most frequent words of this book accurately show the journey Kvothe goes on to look for who he is while dealing with trauma of his past and surviving alone in a world of magic and music.
+
+### Sentiment analysis 
+
+```{r, message=FALSE}
+kvothe_nrc <- kvothe_nostop_wordcount %>% 
+  inner_join(get_sentiments("nrc"))
+```
+
+```{r}
+kvothe_nrc_counts <- kvothe_nrc %>% 
+  count(sentiment)
+
+ggplot(data = kvothe_nrc_counts, aes(x = sentiment, y = n)) +
+  geom_col()+
+  coord_flip()+
+  labs(y="Counts", x="Sentiments", title = "Sentiments in The Name of the Wind")
+  
+```
+
+#### Coder's comment:
+This book is an emotional rollercoast as you follow Kvothe in the highs and lows of his journeys. Through loss, love, life, failures and successes, *The Name of the Wind* will keep you reading to find out what happens next for this gifted adventurer.
+
+### Citation
+Rothfuss, P. (2007). The Name of the Wind.
+
+

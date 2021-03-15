@@ -2,7 +2,6 @@ name: "."
 title: "Laurel Wee"
 description: |
   Laurel Wee
-base_url: https://laurelwee.github.io/website-lw/
 output_dir: "docs"
 navbar:
   right:
@@ -12,4 +11,4 @@ navbar:
       href: about.html
     - text: "Up to date"
       href: blog.html
-site: distill::distill_website
+output: distill::distill_article

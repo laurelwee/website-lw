@@ -1,0 +1,140 @@
+---
+title: "Animation of Plastic Contributors"
+description: |
+  IN PROGRESSFor week 5 of TidyTuesday of 2021 we wrangled and visualized Global Plastics Data. I chose to compare the total plastic counts of the top 5 contributors in 2019 and 2020.
+author:
+  - name: Laurel Wee
+    url: {}
+date: 03-15-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: expand
+    draft: TRUE
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, eval = FALSE)
+library(tidyverse)
+library(tidytuesdayR)
+library(tsibble)
+library(gganimate)
+library(gifski)
+library(patchwork)
+library(magick)
+
+```
+```{r}
+tuesdata <- tidytuesdayR::tt_load(2021, week = 5)
+```
+
+![Animation of the top 5 global plastice contributors from 2019-2020]( https://github.com/laurelwee/244-a2-task-2-3/blob/main/top5_plastic_animation.gif)
+
+```{r}
+plastics <- tuesdata$plastics 
+plastic_top5<- plastics%>% 
+  select(country, year, parent_company, grand_total) %>% 
+  filter(parent_company != "Grand Total", country != "EMPTY") %>% 
+  group_by(country, year) %>% 
+  summarize(total_count = sum(grand_total, na.rm = TRUE)) %>% 
+  group_by(year) %>% 
+  mutate(rank = rank(-total_count)) %>% 
+  arrange(-total_count) %>% 
+  slice_max(total_count, n=5)
+  
+volunteers_event <-plastics %>% 
+  select(country, year, volunteers, num_events) %>% 
+  group_by(country, year) %>% 
+  mutate(vol_per_event = volunteers/num_events) %>%
+  summarize(avg_vol_per_event= mean(vol_per_event)) %>% 
+  arrange(-avg_vol_per_event) %>%
+  group_by(year) %>% 
+  slice_max(avg_vol_per_event, n=5) %>% 
+  mutate(rank = rank(-avg_vol_per_event))
+
+top5_event <-plastics %>% 
+  select(country, year, num_events) %>% 
+  filter(country!="EMPTY") %>% 
+  group_by(country, year) %>% 
+  summarize(events = mean(num_events, na.rm = TRUE)) %>% 
+  arrange(-events) %>%
+  group_by(year) %>% 
+  slice_max(events, n=5) %>% 
+  mutate(rank = rank(-events))
+  
+```
+```{r}
+  
+top5_plastic_plot <- ggplot(plastic_top5) +
+  geom_col(aes(x=rank, y=total_count, fill=country))+
+  labs(y = "Total Plastic Count", x= "Country Rank" , subtitle = "Top 5 Plastic Contributors from 2019-2020")+
+  transition_time(year)+
+  ggtitle('{closest_state}')+
+  transition_states(year,transition_length = 2, state_length = 2)+
+  ease_aes("linear") +
+  enter_fade() +
+  exit_fade()
+
+top5_vol_plot <- ggplot(volunteers_event) +
+  geom_col(aes(x=rank, y=avg_vol_per_event, fill=country))+
+   labs(y = "Average Volunteer Count per Event", subtitle = "Top 5 Plastic Contributors from 2019-2020")+
+  transition_time(year)+
+  ggtitle('{closest_state}')+
+  transition_states(year,transition_length = 2, state_length = 2)+
+  ease_aes("linear") +
+  enter_fade() +
+  exit_fade()
+  
+top5_event_plot <- ggplot(top5_event) +
+  geom_col(aes(x=rank, y=events, fill=country))+
+   labs(y = "Number of Events", x= "Country Rank", subtitle = "Top 5 Plastic Clean-up Events from 2019-2020")+
+  transition_time(year)+
+  ggtitle('{closest_state}')+
+  transition_states(year,transition_length = 2, state_length = 2)+
+  ease_aes("linear") +
+  enter_fade() +
+  exit_fade()
+
+#combined_plastic_vol <-(top5_plastic_plot|top5_vol_plot)
+
+anim_save("top5_plastic_animation.gif", top5_plastic_plot)
+anim_save("top5_vol_animation.gif", top5_vol_plot)
+anim_save("top5_event_animation.gif", top5_event_plot)
+```
+
+```{r}
+# save each animation as individual frames
+# each frame will be saved as a PNG image
+top5_plastic_gif <- animate(top5_plastic_plot, 
+                      device = "png",
+                      width = 400, 
+                      height = 400, 
+                      renderer = file_renderer("./gganim", prefix = "top5_plastic", overwrite = TRUE))
+top5_event_gif <- animate(top5_event_plot, 
+                     device = "png",
+                     width = 400, 
+                     height = 400,
+                     renderer = file_renderer("./gganim", prefix = "top5_event", overwrite = TRUE))
+                           
+                                                             # stitch two animations together
+# read the first image (frame) of each animation
+a <- image_read(top5_plastic_gif[[1]])
+b <- image_read(top5_event_gif[[1]])
+# combine the two images into a single image
+combined <- image_append(c(a,b))
+new_gif <- c(combined)
+for(i in 2:99){ # combine images frame by frame
+  a <- image_read(top5_plastic_gif[[i]])
+  b <- image_read(top5_event_gif[[i]])
+  combined <- image_append(c(a,b))
+  new_gif <- c(new_gif,combined)
+}
+
+# make an animation of the combined images
+combined_gif <- image_animate(new_gif)
+# save as gif
+image_write(combined_gif, "plastic_events.gif")
+```
+
+

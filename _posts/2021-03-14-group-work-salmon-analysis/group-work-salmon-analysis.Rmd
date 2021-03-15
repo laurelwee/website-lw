@@ -2,11 +2,10 @@
 title: "Group Work: Salmon Analysis"
 description: "This project was part of an assignment for EMS 244 at Bren. I worked with two other graduate students to do an analysis of salmon observed over time. We each did one tab individually, but the overall project was collaborative. My individual work is tab 3. "
 author: "Carmen Galaz-García, Cali Pfleger, and Laurel Wee"
-date: 01-29-2021
+date: 02-10-2021
 output:
   distill::distill_article:
     code_folding: hide
-    css: postcards.css
     theme: lumen
 ---
 
@@ -29,10 +28,10 @@ This summary explores adult fish passage recorded from January 2001 to December 
 ## Data Citation
 
 Looking towards tailspar from yarder at Willamette Falls. Source: (Forest Engineering Inc., Copyright, 1996)
-![Looking towards tailspar from yarder at Willamette Falls](fish.png)
+![Looking towards tailspar from yarder at Willamette Falls](path= here("data","fish.png")
 
 Map of Willamette Falls. Source: Portland District, U.S. Army Corps of Engineers, 2021. 
-![Looking towards tailspar from yarder at Willamette Falls](map.png)
+![Looking towards tailspar from yarder at Willamette Falls](path= here("data","map.png")
 
 ## Data Citation
 

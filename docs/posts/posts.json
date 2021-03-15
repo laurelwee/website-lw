@@ -1,1 +1,121 @@
-[]
+[
+  {
+    "path": "posts/2021-03-15-animation-of-plastic-contributors/",
+    "title": "Animation of Plastic Contributors",
+    "description": "IN PROGRESSFor week 5 of TidyTuesday of 2021 we wrangled and visualized Global Plastics Data. I chose to compare the total plastic counts of the top 5 contributors in 2019 and 2020.",
+    "author": [
+      {
+        "name": "Laurel Wee",
+        "url": {}
+      }
+    ],
+    "date": "2021-03-15",
+    "categories": [],
+    "contents": "\r\n\r\n\r\nexpand\r\n\r\ntuesdata <- tidytuesdayR::tt_load(2021, week = 5)\r\n\r\n\r\n\r\nAnimation of the top 5 global plastice contributors from 2019-2020\r\n\r\nexpand\r\n\r\nplastics <- tuesdata$plastics \r\nplastic_top5<- plastics%>% \r\n  select(country, year, parent_company, grand_total) %>% \r\n  filter(parent_company != \"Grand Total\", country != \"EMPTY\") %>% \r\n  group_by(country, year) %>% \r\n  summarize(total_count = sum(grand_total, na.rm = TRUE)) %>% \r\n  group_by(year) %>% \r\n  mutate(rank = rank(-total_count)) %>% \r\n  arrange(-total_count) %>% \r\n  slice_max(total_count, n=5)\r\n  \r\nvolunteers_event <-plastics %>% \r\n  select(country, year, volunteers, num_events) %>% \r\n  group_by(country, year) %>% \r\n  mutate(vol_per_event = volunteers/num_events) %>%\r\n  summarize(avg_vol_per_event= mean(vol_per_event)) %>% \r\n  arrange(-avg_vol_per_event) %>%\r\n  group_by(year) %>% \r\n  slice_max(avg_vol_per_event, n=5) %>% \r\n  mutate(rank = rank(-avg_vol_per_event))\r\n\r\ntop5_event <-plastics %>% \r\n  select(country, year, num_events) %>% \r\n  filter(country!=\"EMPTY\") %>% \r\n  group_by(country, year) %>% \r\n  summarize(events = mean(num_events, na.rm = TRUE)) %>% \r\n  arrange(-events) %>%\r\n  group_by(year) %>% \r\n  slice_max(events, n=5) %>% \r\n  mutate(rank = rank(-events))\r\n\r\n\r\n\r\n\r\n\r\nexpand\r\n\r\ntop5_plastic_plot <- ggplot(plastic_top5) +\r\n  geom_col(aes(x=rank, y=total_count, fill=country))+\r\n  labs(y = \"Total Plastic Count\", x= \"Country Rank\" , subtitle = \"Top 5 Plastic Contributors from 2019-2020\")+\r\n  transition_time(year)+\r\n  ggtitle('{closest_state}')+\r\n  transition_states(year,transition_length = 2, state_length = 2)+\r\n  ease_aes(\"linear\") +\r\n  enter_fade() +\r\n  exit_fade()\r\n\r\ntop5_vol_plot <- ggplot(volunteers_event) +\r\n  geom_col(aes(x=rank, y=avg_vol_per_event, fill=country))+\r\n   labs(y = \"Average Volunteer Count per Event\", subtitle = \"Top 5 Plastic Contributors from 2019-2020\")+\r\n  transition_time(year)+\r\n  ggtitle('{closest_state}')+\r\n  transition_states(year,transition_length = 2, state_length = 2)+\r\n  ease_aes(\"linear\") +\r\n  enter_fade() +\r\n  exit_fade()\r\n  \r\ntop5_event_plot <- ggplot(top5_event) +\r\n  geom_col(aes(x=rank, y=events, fill=country))+\r\n   labs(y = \"Number of Events\", x= \"Country Rank\", subtitle = \"Top 5 Plastic Clean-up Events from 2019-2020\")+\r\n  transition_time(year)+\r\n  ggtitle('{closest_state}')+\r\n  transition_states(year,transition_length = 2, state_length = 2)+\r\n  ease_aes(\"linear\") +\r\n  enter_fade() +\r\n  exit_fade()\r\n\r\n#combined_plastic_vol <-(top5_plastic_plot|top5_vol_plot)\r\n\r\nanim_save(\"top5_plastic_animation.gif\", top5_plastic_plot)\r\nanim_save(\"top5_vol_animation.gif\", top5_vol_plot)\r\nanim_save(\"top5_event_animation.gif\", top5_event_plot)\r\n\r\n\r\n\r\n\r\n\r\nexpand\r\n\r\n# save each animation as individual frames\r\n# each frame will be saved as a PNG image\r\ntop5_plastic_gif <- animate(top5_plastic_plot, \r\n                      device = \"png\",\r\n                      width = 400, \r\n                      height = 400, \r\n                      renderer = file_renderer(\"./gganim\", prefix = \"top5_plastic\", overwrite = TRUE))\r\ntop5_event_gif <- animate(top5_event_plot, \r\n                     device = \"png\",\r\n                     width = 400, \r\n                     height = 400,\r\n                     renderer = file_renderer(\"./gganim\", prefix = \"top5_event\", overwrite = TRUE))\r\n                           \r\n                                                             # stitch two animations together\r\n# read the first image (frame) of each animation\r\na <- image_read(top5_plastic_gif[[1]])\r\nb <- image_read(top5_event_gif[[1]])\r\n# combine the two images into a single image\r\ncombined <- image_append(c(a,b))\r\nnew_gif <- c(combined)\r\nfor(i in 2:99){ # combine images frame by frame\r\n  a <- image_read(top5_plastic_gif[[i]])\r\n  b <- image_read(top5_event_gif[[i]])\r\n  combined <- image_append(c(a,b))\r\n  new_gif <- c(new_gif,combined)\r\n}\r\n\r\n# make an animation of the combined images\r\ncombined_gif <- image_animate(new_gif)\r\n# save as gif\r\nimage_write(combined_gif, \"plastic_events.gif\")\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-03-15T16:08:55-07:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2021-03-15-text-analysis/",
+    "title": "Text Analysis",
+    "description": "For EMS 244 I did a text analysis of one of my favorite books. The task included wrangling text from the book and doing a sentiment analysis. I highly recommmend *The Kingkiller Chronicle* book series if you enjoy reading fantasy. Reading the coder's notes that I included will not spoil the first book anynmore than a backcover would. If you are someone that avoids starting unfinished series you may want to wait to read the first two, however, I believe it still worth the read.",
+    "author": [
+      {
+        "name": "Laurel Wee",
+        "url": {}
+      }
+    ],
+    "date": "2021-03-15",
+    "categories": [],
+    "contents": "\r\nA3 Task 3: Text wrangling and analysis\r\nName of the Wind by Patrick Rothfuss\r\ndate: 2/24/2021\r\n\r\n\r\nexpand\r\n\r\n# Read in pdf for analysis, choose an amazing book, such as 'Name of the Wind'\r\nkvothe_text <- pdf_text(here(\"data\",\"the-name-of-the-wind.pdf\"))\r\n\r\n# Tidy the data and turn into a data frame, create column for the full text separated by page and line `/n`\r\nkvothe_tidy <- data.frame(kvothe_text) %>% \r\n  slice(-(1:16)) %>% \r\n  mutate(text_full = str_split(kvothe_text, pattern = '\\\\n')) %>% \r\n  unnest(text_full) %>% \r\n  mutate(text_full = str_trim(text_full)) \r\n\r\n# Turn the tidy data into parts that you wan to work with\r\nkvothe_df <- kvothe_tidy %>% \r\n  mutate(chapter = case_when(\r\n    str_detect(text_full, \"CHAPTER\") ~ text_full, # Separated by Chapter\r\n    TRUE ~ NA_character_\r\n  )) %>% \r\n  fill(chapter) %>% \r\n  separate(col = chapter, into = c(\"ch\", \"no\"), sep = \" \")  #%>% \r\n  #select(-kvothe_text) # this broke something\r\n#%>% # No longer need the full page text column\r\n # mgsub(no, replace_number(seq_len(1:92)))\r\n\r\n# Tokenize the data and single out each word\r\nkvothe_tokens <- kvothe_df %>% \r\n  unnest_tokens(word, text_full)\r\n\r\n\r\n\r\nMost frequently used words\r\n\r\n\r\nexpand\r\n\r\nkvothe_wordcount <- kvothe_tokens %>% \r\n  count(no, word) \r\n\r\nkvothe_nostop_wordcount <- kvothe_tokens %>% \r\n  anti_join(stop_words)%>% \r\n  count(no, word)\r\n\r\ntop_5_words <- kvothe_nostop_wordcount %>% \r\n  group_by(no) %>% \r\n  arrange(-n) %>% \r\n  slice(1:5)\r\n\r\n\r\n\r\n\r\n\r\nexpand\r\n\r\n#ggplot(data = top_5_words, aes(x = word, y = n)) +\r\n # geom_col(fill = \"blue\") +\r\n  #facet_wrap(~no, scales = \"free\") +\r\n  #coord_flip()\r\n\r\n\r\n\r\n\r\n\r\nexpand\r\n\r\n# Count the most frequently used words and select the top ones, DO NOT include the authors name and \"ing\" \r\ntop_100 <- kvothe_tokens %>% \r\n  anti_join(stop_words) %>% \r\n  ungroup() %>% \r\n  count(word) %>% \r\n  arrange(-n) %>% \r\n  filter(word != \"patrick\" & word != \"rothfuss\" & word != \"ing\") %>% \r\n  slice(1:100)\r\n\r\n# Word cloud the most used words because I can't do a by chapter analysis yet\r\nname_wind_cloud <- ggplot(data = top_100, aes(label = word)) +\r\n  geom_text_wordcloud(aes(\r\n    color = n, \r\n    size = n)) +\r\n  scale_size_area(max_size = 10) +\r\n  scale_color_gradientn(colors = c(\"turquoise\",\"magenta\",\"red\")) +\r\n  theme_minimal()\r\nname_wind_cloud\r\n\r\n\r\n\r\n\r\nCoder’s comment:\r\nThis word frequency analysis Name of the Wind by Patrick Rothfuss is book one of the King Killer Chronicles. It is a story of a young man, Kvothe, told by an old innkeeper who has lost touch with who he one was and is now called Kote. The most frequent words of this book accurately show the journey Kvothe goes on to look for who he is while dealing with trauma of his past and surviving alone in a world of magic and music.\r\nSentiment analysis\r\n\r\n\r\nexpand\r\n\r\nkvothe_nrc <- kvothe_nostop_wordcount %>% \r\n  inner_join(get_sentiments(\"nrc\"))\r\n\r\n\r\n\r\n\r\n\r\nexpand\r\n\r\nkvothe_nrc_counts <- kvothe_nrc %>% \r\n  count(sentiment)\r\n\r\nggplot(data = kvothe_nrc_counts, aes(x = sentiment, y = n)) +\r\n  geom_col()+\r\n  coord_flip()+\r\n  labs(y=\"Counts\", x=\"Sentiments\", title = \"Sentiments in The Name of the Wind\")\r\n\r\n\r\n\r\n\r\nCoder’s comment:\r\nThis book is an emotional rollercoast as you follow Kvothe in the highs and lows of his journeys. Through loss, love, life, failures and successes, The Name of the Wind will keep you reading to find out what happens next for this gifted adventurer.\r\nCitation\r\nRothfuss, P. (2007). The Name of the Wind.\r\n\r\n\r\n\r\n",
+    "preview": "posts/2021-03-15-text-analysis/text-analysis_files/figure-html5/unnamed-chunk-4-1.png",
+    "last_modified": "2021-03-15T16:23:05-07:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2021-03-14-multivariate-analysis/",
+    "title": "Multivariate Analysis",
+    "description": "For the final project in EMS 263 I created and ran a Multivariate Analysis model to find the watersheds in Southern Santa Barbara County that would be suitable for conservation.",
+    "author": [
+      {
+        "name": "Laurel Wee",
+        "url": {}
+      }
+    ],
+    "date": "2021-03-14",
+    "categories": [],
+    "contents": "\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-03-14T21:48:33-07:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2021-03-14-working-with-raster-data/",
+    "title": "Working with Raster Data",
+    "description": "Here we explore the projected species richness of cetaceans along the California coast. This exploration uses data from AquaMaps that shows that probability of a species occurring based off of environmental suitability parameters.",
+    "author": [
+      {
+        "name": "Laurel Wee",
+        "url": {}
+      }
+    ],
+    "date": "2021-03-14",
+    "categories": [],
+    "contents": "\r\n\r\n\r\nexpand\r\n\r\n# Read in data\r\nca_cetaceans <- list.files(path = here(\"data\", \"ca_cetaceans\"), pattern = \"*.tif\", full.names = TRUE)\r\n# Stack the rasters\r\ncetaceans_stack <- stack(ca_cetaceans)\r\n\r\n\r\n\r\n\r\n\r\nexpand\r\n\r\n# Set a threshold of 0.6 as suggested. IF the threshold is met True/'1' if not False/'0'\r\ncetaceans_present<- function(x, \r\n                             thresh = 0.6){\r\n  y<-ifelse(x>=thresh, 1, 0)\r\n  return(y)\r\n}\r\n# Calculate species richness using the data the met the threshold \r\ncetaceans_richness <- calc(cetaceans_stack, fun = cetaceans_present)\r\n# Calculate the sum of the previous species richness results\r\ncetaceans_richness_sum <- calc(cetaceans_richness, fun = sum, na.rm = TRUE)\r\n# Turn the raster into a dataframe\r\ncetaceans_df <- rasterToPoints(cetaceans_richness_sum) %>% \r\n  as.data.frame() \r\n#%>% pivot_longer(cols = (3:37) , names_to = \"species\", values_to = \"present\") # don't need\r\n\r\n\r\n\r\n\r\n\r\nexpand\r\n\r\n# using the `rnaturalearth` package get a basemap for the cetacean species richness data\r\nmap_natearth <- ne_download(scale = 'large', \r\n                         type = 'land',\r\n                         category = 'physical',\r\n                         returnclass = c(\"sf\"))\r\n# plot the species richness against the basemap\r\nggplot() +\r\n  geom_raster()+\r\ngeom_raster(data = cetaceans_df, aes(x=x,y=y, fill = layer)) +\r\n   geom_sf(data = map_natearth, color = 'skyblue4', fill = 'wheat3') +\r\n  coord_sf(xlim = c(-125,-115), ylim = c(32,38)) +\r\n  scale_fill_gradient(low = 'white', high = 'red4') +\r\n  theme_void() +\r\n  theme(panel.background = element_rect(fill = 'lightblue1'))+\r\n  labs(fill= \"Species Richness\")\r\n\r\n\r\n\r\n\r\nFigure 1: Figure: Species richness of cetaceans along the California coast. A threshhold of 60% probability was use to establish if the species was marked as ‘present’. This 0.6 threshold was selected due to wanting to ensure each species was included only if it had a greater chance of being ‘present’ than ‘not present’.\r\n\r\n\r\n\r\nData Citation\r\nKaschner, K., Rius-Barile, J., Kesner-Reyes, K., Garilao, C., Kullander, S., Rees, T., & Froese, R. (2016). AquaMaps: Predicted range maps for aquatic species. www.aquamaps.org\r\n\r\n\r\n\r\n",
+    "preview": "posts/2021-03-14-working-with-raster-data/working-with-raster-data_files/figure-html5/unnamed-chunk-3-1.png",
+    "last_modified": "2021-03-14T21:37:10-07:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2021-02-15-my-resume/",
+    "title": "My Resume!",
+    "description": "This is my resume, feel free to contact me about any of my experiences or skills. I am always happy to discuss future oportunities or provide advice to help others figure out their own path.",
+    "author": [
+      {
+        "name": "Laurel Wee",
+        "url": {}
+      }
+    ],
+    "date": "2021-02-15",
+    "categories": [],
+    "contents": "\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-03-15T16:09:42-07:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2021-03-14-group-work-salmon-analysis/",
+    "title": "Group Work: Salmon Analysis",
+    "description": "This project was part of an assignment for EMS 244 at Bren. I worked with two other graduate students to do an analysis of salmon observed over time. We each did one tab individually, but the overall project was collaborative. My individual work is tab 3.",
+    "author": [
+      {
+        "name": "Carmen Galaz-García, Cali Pfleger, and Laurel Wee",
+        "url": {}
+      }
+    ],
+    "date": "2021-02-10",
+    "categories": [],
+    "contents": "\r\nOverview\r\nSummary\r\nThis summary explores adult fish passage recorded from January 2001 to December 2012 at the Willamette Falls fish ladder on the Willamette River (Oregon). Data were shared by and accessed from Columbia River DART (Data Access in Real Time).\r\nData Citation\r\nLooking towards tailspar from yarder at Willamette Falls. Source: (Forest Engineering Inc., Copyright, 1996) [Looking towards tailspar from yarder at Willamette Falls](path= here(“data”,“fish.png”)\r\nMap of Willamette Falls. Source: Portland District, U.S. Army Corps of Engineers, 2021. [Looking towards tailspar from yarder at Willamette Falls](path= here(“data”,“map.png”)\r\nData Citation\r\nWillametter Falls fish passage\r\n\r\n\r\nhide\r\n\r\nfish <- read_csv(here(\"data\",\"willamette_fish_passage.csv\")) %>% \r\n  clean_names() %>% \r\n  select(date,steelhead,coho,jack_coho) %>% \r\n  mutate(date = lubridate::mdy(date)) %>%     # convert to date type\r\n  rename(jack = jack_coho) %>%                # update column name\r\n  pivot_longer(cols = steelhead:jack,         # convert to tidy data\r\n               names_to=\"fish_type\", \r\n               values_to = \"n_crossing\") %>% \r\n  as_tsibble(key=fish_type, index= date)           # convert date into tsibble\r\n\r\n\r\n\r\nOriginal time series\r\n\r\n\r\nhide\r\n\r\nfish_time <- fish %>% \r\n  mutate(n_crossing = replace_na(n_crossing, 0)) %>% \r\n  group_by(fish_type)\r\n  \r\nggplot(data = fish_time, aes(x = date, y = n_crossing))  +\r\n  geom_line(aes(color = fish_type)) +\r\n  facet_wrap(~fish_type) +\r\n  theme_light()+ \r\n  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +\r\n  labs(title = \"Willamette Falls Fish Passages 2001-2010\") +\r\n        xlab(\"Date\") +\r\n        ylab(\"Counts of Adult Salmon Passage\") \r\n\r\n\r\n\r\n\r\nFigure 1. Yearly count of Coho, Jack and Steelhead salmon passing through the Willamette Falls fish ladder from 2001 to 2010. Graph 1 shows the time series by year of adult coho salmon (Oncorhynchus mykiss). Graphs 2 and 3 show, respectively, the time series passage by year of adult and coho and steelhead salmon (Oncorhynchus kisutch).\r\nData: Columbia River DART.\r\nTrends:\r\nAdult coho salmon have steadily increasing counts from 2009 onward.\r\nThere does not seem to be an increase in yearly counts of adult coho and steelhead salmon passing through the Willamette Falls fish ladder from 2001 to 2010.\r\nSeasonplots\r\n\r\n\r\nhide\r\n\r\nbasic_seasonplot <- function(fish_data, fish_type_str){\r\n \r\n  month_fish_plot <- fish_data %>% \r\n    filter(fish_type == fish_type_str) %>%  \r\n    index_by(yr_mo = ~yearweek(.)) %>% # group by year and month\r\n    summarize(monthly_mean_crossings = mean(n_crossing, na.rm=TRUE))  %>% \r\n    gg_season(y=monthly_mean_crossings) +\r\n    labs(x=\" \",\r\n         y=\"weekly average passage\")+\r\n    theme_light()\r\n  \r\n  return(month_fish_plot)\r\n}\r\n\r\nsteel_season <- basic_seasonplot(fish, \"steelhead\")+\r\n  labs(title = \"Graph 1. Adult Steelhead  Passage\")\r\n\r\ncoho_season <- basic_seasonplot(fish, \"coho\") +\r\n  labs(title = \"Graph 2. \\nAdult Coho Passage\")\r\n\r\njack_season <- basic_seasonplot(fish, \"jack\") +\r\n  labs(title = \"Graph 3. \\nJack Coho Passage\")+\r\n  labs(y=\"\")\r\n\r\n\r\nsteel_season / (coho_season| jack_season) +\r\n  plot_layout(guides = \"collect\") & theme(legend.position = 'right')\r\n\r\n\r\n\r\n\r\nFigure 2. Average weekly count of three groups of salmon passing through the Willamette Falls fish ladder from 2001 to 2010. Graph 1 shows the average weekly passage by year of adult Steelhead salmon (Oncorhynchus mykiss). Graphs 2 and 3 show, respectively, the average weekly passage by year of adult and jack Coho salmon (Oncorhynchus kisutch).\r\nData: Columbia River Dart.\r\nTrends:\r\nWe observe that adult Steelhead salmon have clear seasonality of the weekly average passage. The average count increases from December to May/June, then decreases until August/September and remains in less than 100 average crossings until December.\r\nBoth groups of Coho salmon have the same seasonality in weekly average passage. Coho salmon are recorded to use the fish ladder from August to December regardless of life stage, with crossings increasing from August and peaking in September.\r\nAverage weekly crossings of adult Coho salmon have increased from 2001 to 2010, while passage of adult Steelhead salmon has decreased in the same period.\r\nAnnual counts by species\r\n\r\n\r\nhide\r\n\r\n# Make a subset of the fish dataframe for annual passage counts\r\nfish_annual <- fish %>% \r\n  index_by(year = ~year(.)) %>% \r\n  group_by(fish_type) %>% \r\n  summarize(annual_count = sum(n_crossing, na.rm = TRUE)) # total fish count of each fish_type per year\r\n\r\n# Plot the annual counts by year\r\nggplot(data = fish_annual,aes(x=year,y=annual_count, color=fish_type))+\r\n  geom_line()+\r\n  theme_light()+\r\n  scale_x_continuous(breaks = c(2001:2010))+\r\n  scale_color_hue(labels = c(\"Coho\", \"Jack Coho\", \"Steelhead\"))+\r\n  guides(color = guide_legend(reverse = T))+\r\n  labs(x= \"Year\", y= \"Annual count\", title = \"Annual counts of Coho, jack Coho, and Steelhead salmon\", subtitle = \"surveyed from 2001-2010\")+\r\n  theme(legend.position = c(.80, .80))+\r\n  theme(legend.title = element_blank())\r\n\r\n\r\n\r\n\r\n(#fig:tab 3)Figure 3. Annual count of Steelhead, jack Coho, and coho salmon passing passing through Willamette Falls fish ladder from 2001 to 2010. Steelhead salmon, Oncorhynchus mykiss, are shown to have the highest annual counts (blue line).The adult Coho and jack Coho salmon, Oncorhynchus kisutch, (red and green line respectively) have lower annual counts than Steelhead, but the adult Coho increase after 2008. Data: Columbia River Dart.\r\n\r\n\r\n\r\nTrends:\r\nSteelhead salmon counts are the highest among the three salmon groups observed. Steelhead decrease in 2003 and 2005, but increase in 2004 and again in 2010 after having relatively constant annual counts from 2005-2009.\r\nJack Coho have the lowest counts among the three groups.\r\nCoho counts are similar to Jack Coho, but counts increase after 2008.\r\n\r\n\r\n\r\n",
+    "preview": "posts/2021-03-14-group-work-salmon-analysis/distill-preview.png",
+    "last_modified": "2021-03-15T16:08:24-07:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2021-02-09-welcome/",
+    "title": "Welcome Post",
+    "description": "This is my first blog post!",
+    "author": [
+      {
+        "name": "Laurel Wee",
+        "url": {}
+      }
+    ],
+    "date": "2021-02-09",
+    "categories": [],
+    "contents": "\r\nI am very excited to build a new skill as I build this personal website. I started at Bren without any skills in coding and though it is often challenging learning something new that is so complex, it has been very rewarding. Please stay posted to see some of the projects I work on while at Bren and beyond.\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-03-14T21:06:16-07:00",
+    "input_file": {}
+  }
+]
