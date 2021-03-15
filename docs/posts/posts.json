@@ -2,18 +2,18 @@
   {
     "path": "posts/2021-02-09-welcome/",
     "title": "welcome",
-    "description": "A short description of the post.",
+    "description": "This is my first blog post!",
     "author": [
       {
-        "name": "Unknown",
+        "name": "Laurel Wee",
         "url": {}
       }
     ],
     "date": "2021-02-09",
     "categories": [],
-    "contents": "\r\nDistill is a publication format for scientific and technical writing, native to the web.\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n\r\n\r\n",
+    "contents": "\r\nI am very excited to build a new skill as I build this personal website. I started at Bren without any skills in coding and though it is often challenging learning something new that is so complex, it has been very rewarding. Please stay posted to see some of the projects I work on while at Bren and beyond.\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-02-09T21:59:46-08:00",
-    "input_file": {}
+    "last_modified": "2021-03-14T20:50:11-07:00",
+    "input_file": "welcome.utf8.md"
   }
 ]

@@ -1,9 +1,8 @@
 ---
 title: "welcome"
-description: |
-  A short description of the post.
+description: This is my first blog post!
 author:
-  - name: Unknown
+  - name: Laurel Wee
 date: 02-09-2021
 output:
   distill::distill_article:
@@ -15,8 +14,6 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-Distill is a publication format for scientific and technical writing, native to the web.
-
-Learn more about using Distill at <https://rstudio.github.io/distill>.
+I am very excited to build a new skill as I build this personal website. I started at Bren without any skills in coding and though it is often challenging learning something new that is so complex, it has been very rewarding. Please stay posted to see some of the projects I work on while at Bren and beyond.
 
 
