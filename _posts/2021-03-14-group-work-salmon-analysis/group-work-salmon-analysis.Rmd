@@ -3,16 +3,16 @@ title: "Group Work: Salmon Analysis"
 description: "This project was part of an assignment for EMS 244 at Bren. I worked with two other graduate students to do an analysis of salmon observed over time. We each did one tab individually, but the overall project was collaborative. My individual work is tab 3. "
 author: "Carmen Galaz-García, Cali Pfleger, and Laurel Wee"
 date: 01-29-2021
-base_url: 
 output:
   distill::distill_article:
     code_folding: hide
+    css: postcards.css
     theme: lumen
 ---
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 library(tidyverse)
 library(here)
 library(janitor)

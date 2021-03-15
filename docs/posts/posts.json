@@ -17,6 +17,23 @@
     "input_file": "working-with-raster-data.utf8.md"
   },
   {
+    "path": "posts/2021-03-14-multivariate-analysis/",
+    "title": "Multivariate Analysis",
+    "description": "For the final project in EMS 263 I created and ran a Multivariate Analysis model to find the watersheds in Southern Santa Barbara County that would be suitable for conservation.",
+    "author": [
+      {
+        "name": "Laurel Wee",
+        "url": {}
+      }
+    ],
+    "date": "2021-03-14",
+    "categories": [],
+    "contents": "\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-03-14T21:48:33-07:00",
+    "input_file": "multivariate-analysis.utf8.md"
+  },
+  {
     "path": "posts/2021-02-09-welcome/",
     "title": "Welcome Post",
     "description": "This is my first blog post!",
