@@ -1,0 +1,71 @@
+---
+title: "Working with Raster Data"
+description: |
+  Here we explore the projected species richness of cetaceans along the California coast. This exploration uses data from AquaMaps that shows that probability of a species occurring based off of environmental suitability parameters. 
+author:
+  - name: Laurel Wee
+    url: {}
+date: 03-14-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: expand
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(raster)
+library(tidyverse)
+library(here)
+library(sf)
+library(fasterize)
+library(rnaturalearth)
+```
+
+
+```{r}
+# Read in data
+ca_cetaceans <- list.files(path = here("data", "ca_cetaceans"), pattern = "*.tif", full.names = TRUE)
+# Stack the rasters
+cetaceans_stack <- stack(ca_cetaceans)
+```
+```{r}
+# Set a threshold of 0.6 as suggested. IF the threshold is met True/'1' if not False/'0'
+cetaceans_present<- function(x, 
+                             thresh = 0.6){
+  y<-ifelse(x>=thresh, 1, 0)
+  return(y)
+}
+# Calculate species richness using the data the met the threshold 
+cetaceans_richness <- calc(cetaceans_stack, fun = cetaceans_present)
+# Calculate the sum of the previous species richness results
+cetaceans_richness_sum <- calc(cetaceans_richness, fun = sum, na.rm = TRUE)
+# Turn the raster into a dataframe
+cetaceans_df <- rasterToPoints(cetaceans_richness_sum) %>% 
+  as.data.frame() 
+#%>% pivot_longer(cols = (3:37) , names_to = "species", values_to = "present") # don't need
+```
+
+```{r, message=FALSE, warning=FALSE, echo = T, results = "hide", fig.cap="**Figure**: Species richness of cetaceans along the California coast. A threshhold of 60% probability was use to establish if the species was marked as 'present'. This 0.6 threshold was selected due to wanting to ensure each species was included only if it had a greater chance of being 'present' than 'not present'."}
+# using the `rnaturalearth` package get a basemap for the cetacean species richness data
+map_natearth <- ne_download(scale = 'large', 
+                         type = 'land',
+                         category = 'physical',
+                         returnclass = c("sf"))
+# plot the species richness against the basemap
+ggplot() +
+  geom_raster()+
+geom_raster(data = cetaceans_df, aes(x=x,y=y, fill = layer)) +
+   geom_sf(data = map_natearth, color = 'skyblue4', fill = 'wheat3') +
+  coord_sf(xlim = c(-125,-115), ylim = c(32,38)) +
+  scale_fill_gradient(low = 'white', high = 'red4') +
+  theme_void() +
+  theme(panel.background = element_rect(fill = 'lightblue1'))+
+  labs(fill= "Species Richness")
+
+```
+
+### Data Citation
+Kaschner, K., Rius-Barile, J., Kesner-Reyes, K., Garilao, C., Kullander, S., Rees, T., & Froese, R. (2016). AquaMaps: Predicted range maps for aquatic species. www.aquamaps.org
+
+
