@@ -11,6 +11,4 @@ navbar:
       href: about.html
     - text: "Up to date"
       href: blog.html
-    - text: "Resume"
-      href: my-resume.html
 output: distill::distill_article

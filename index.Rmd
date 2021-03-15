@@ -9,7 +9,7 @@ links:
   - label: Email
     url: "laurelwee@bren.ucsb.edu"
   - label: "Resume"
-    url:
+    url: "https://laurelwee.github.io/website-lw/posts/2021-02-15-my-resume/"
 output: postcards::trestles
 site: distill::distill_website
 ---
