@@ -8,9 +8,10 @@ links:
     url: "https://github.com/laurelwee"
   - label: Email
     url: "laurelwee@bren.ucsb.edu"
+  - label: "CV"
+    url:
 output:
   postcards::trestles
-  
 site: distill::distill_website
 ---
 
