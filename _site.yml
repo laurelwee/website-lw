@@ -2,6 +2,7 @@ name: "."
 title: "Laurel Wee"
 description: |
   Laurel Wee
+base_url: https://laurelwee.github.io/website-lw/
 output_dir: "docs"
 navbar:
   right:

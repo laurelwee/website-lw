@@ -1,7 +1,6 @@
 ---
 title: "Up to date"  # any name you want here
-listing: 
-  posts: welcome.Rmd
+listing: posts
 ---
 This is where I will make posts to keep you up to date on cool things that I am up to!
 

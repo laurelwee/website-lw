@@ -1,22 +1,5 @@
 [
   {
-    "path": "posts/2021-03-14-working-with-raster-data/",
-    "title": "Working with Raster Data",
-    "description": "Here we explore the projected species richness of cetaceans along the California coast. This exploration uses data from AquaMaps that shows that probability of a species occurring based off of environmental suitability parameters.",
-    "author": [
-      {
-        "name": "Laurel Wee",
-        "url": {}
-      }
-    ],
-    "date": "2021-03-14",
-    "categories": [],
-    "contents": "\r\n\r\n\r\nexpand\r\n\r\n# Read in data\r\nca_cetaceans <- list.files(path = here(\"data\", \"ca_cetaceans\"), pattern = \"*.tif\", full.names = TRUE)\r\n# Stack the rasters\r\ncetaceans_stack <- stack(ca_cetaceans)\r\n\r\n\r\n\r\n\r\n\r\nexpand\r\n\r\n# Set a threshold of 0.6 as suggested. IF the threshold is met True/'1' if not False/'0'\r\ncetaceans_present<- function(x, \r\n                             thresh = 0.6){\r\n  y<-ifelse(x>=thresh, 1, 0)\r\n  return(y)\r\n}\r\n# Calculate species richness using the data the met the threshold \r\ncetaceans_richness <- calc(cetaceans_stack, fun = cetaceans_present)\r\n# Calculate the sum of the previous species richness results\r\ncetaceans_richness_sum <- calc(cetaceans_richness, fun = sum, na.rm = TRUE)\r\n# Turn the raster into a dataframe\r\ncetaceans_df <- rasterToPoints(cetaceans_richness_sum) %>% \r\n  as.data.frame() \r\n#%>% pivot_longer(cols = (3:37) , names_to = \"species\", values_to = \"present\") # don't need\r\n\r\n\r\n\r\n\r\n\r\nexpand\r\n\r\n# using the `rnaturalearth` package get a basemap for the cetacean species richness data\r\nmap_natearth <- ne_download(scale = 'large', \r\n                         type = 'land',\r\n                         category = 'physical',\r\n                         returnclass = c(\"sf\"))\r\n# plot the species richness against the basemap\r\nggplot() +\r\n  geom_raster()+\r\ngeom_raster(data = cetaceans_df, aes(x=x,y=y, fill = layer)) +\r\n   geom_sf(data = map_natearth, color = 'skyblue4', fill = 'wheat3') +\r\n  coord_sf(xlim = c(-125,-115), ylim = c(32,38)) +\r\n  scale_fill_gradient(low = 'white', high = 'red4') +\r\n  theme_void() +\r\n  theme(panel.background = element_rect(fill = 'lightblue1'))+\r\n  labs(fill= \"Species Richness\")\r\n\r\n\r\n\r\n\r\nFigure 1: Figure: Species richness of cetaceans along the California coast. A threshhold of 60% probability was use to establish if the species was marked as ‘present’. This 0.6 threshold was selected due to wanting to ensure each species was included only if it had a greater chance of being ‘present’ than ‘not present’.\r\n\r\n\r\n\r\nData Citation\r\nKaschner, K., Rius-Barile, J., Kesner-Reyes, K., Garilao, C., Kullander, S., Rees, T., & Froese, R. (2016). AquaMaps: Predicted range maps for aquatic species. www.aquamaps.org\r\n\r\n\r\n\r\n",
-    "preview": "posts/2021-03-14-working-with-raster-data/working-with-raster-data_files/figure-html5/unnamed-chunk-3-1.png",
-    "last_modified": "2021-03-14T21:37:10-07:00",
-    "input_file": "working-with-raster-data.utf8.md"
-  },
-  {
     "path": "posts/2021-03-14-multivariate-analysis/",
     "title": "Multivariate Analysis",
     "description": "For the final project in EMS 263 I created and ran a Multivariate Analysis model to find the watersheds in Southern Santa Barbara County that would be suitable for conservation.",
@@ -31,7 +14,24 @@
     "contents": "\r\n\r\n\r\n\r\n\r\n\r\n",
     "preview": {},
     "last_modified": "2021-03-14T21:48:33-07:00",
-    "input_file": "multivariate-analysis.utf8.md"
+    "input_file": {}
+  },
+  {
+    "path": "posts/2021-03-14-working-with-raster-data/",
+    "title": "Working with Raster Data",
+    "description": "Here we explore the projected species richness of cetaceans along the California coast. This exploration uses data from AquaMaps that shows that probability of a species occurring based off of environmental suitability parameters.",
+    "author": [
+      {
+        "name": "Laurel Wee",
+        "url": {}
+      }
+    ],
+    "date": "2021-03-14",
+    "categories": [],
+    "contents": "\r\n\r\n\r\nexpand\r\n\r\n# Read in data\r\nca_cetaceans <- list.files(path = here(\"data\", \"ca_cetaceans\"), pattern = \"*.tif\", full.names = TRUE)\r\n# Stack the rasters\r\ncetaceans_stack <- stack(ca_cetaceans)\r\n\r\n\r\n\r\n\r\n\r\nexpand\r\n\r\n# Set a threshold of 0.6 as suggested. IF the threshold is met True/'1' if not False/'0'\r\ncetaceans_present<- function(x, \r\n                             thresh = 0.6){\r\n  y<-ifelse(x>=thresh, 1, 0)\r\n  return(y)\r\n}\r\n# Calculate species richness using the data the met the threshold \r\ncetaceans_richness <- calc(cetaceans_stack, fun = cetaceans_present)\r\n# Calculate the sum of the previous species richness results\r\ncetaceans_richness_sum <- calc(cetaceans_richness, fun = sum, na.rm = TRUE)\r\n# Turn the raster into a dataframe\r\ncetaceans_df <- rasterToPoints(cetaceans_richness_sum) %>% \r\n  as.data.frame() \r\n#%>% pivot_longer(cols = (3:37) , names_to = \"species\", values_to = \"present\") # don't need\r\n\r\n\r\n\r\n\r\n\r\nexpand\r\n\r\n# using the `rnaturalearth` package get a basemap for the cetacean species richness data\r\nmap_natearth <- ne_download(scale = 'large', \r\n                         type = 'land',\r\n                         category = 'physical',\r\n                         returnclass = c(\"sf\"))\r\n# plot the species richness against the basemap\r\nggplot() +\r\n  geom_raster()+\r\ngeom_raster(data = cetaceans_df, aes(x=x,y=y, fill = layer)) +\r\n   geom_sf(data = map_natearth, color = 'skyblue4', fill = 'wheat3') +\r\n  coord_sf(xlim = c(-125,-115), ylim = c(32,38)) +\r\n  scale_fill_gradient(low = 'white', high = 'red4') +\r\n  theme_void() +\r\n  theme(panel.background = element_rect(fill = 'lightblue1'))+\r\n  labs(fill= \"Species Richness\")\r\n\r\n\r\n\r\n\r\nFigure 1: Figure: Species richness of cetaceans along the California coast. A threshhold of 60% probability was use to establish if the species was marked as ‘present’. This 0.6 threshold was selected due to wanting to ensure each species was included only if it had a greater chance of being ‘present’ than ‘not present’.\r\n\r\n\r\n\r\nData Citation\r\nKaschner, K., Rius-Barile, J., Kesner-Reyes, K., Garilao, C., Kullander, S., Rees, T., & Froese, R. (2016). AquaMaps: Predicted range maps for aquatic species. www.aquamaps.org\r\n\r\n\r\n\r\n",
+    "preview": "posts/2021-03-14-working-with-raster-data/working-with-raster-data_files/figure-html5/unnamed-chunk-3-1.png",
+    "last_modified": "2021-03-14T21:37:10-07:00",
+    "input_file": {}
   },
   {
     "path": "posts/2021-02-09-welcome/",
@@ -48,6 +48,6 @@
     "contents": "\r\nI am very excited to build a new skill as I build this personal website. I started at Bren without any skills in coding and though it is often challenging learning something new that is so complex, it has been very rewarding. Please stay posted to see some of the projects I work on while at Bren and beyond.\r\n\r\n\r\n\r\n",
     "preview": {},
     "last_modified": "2021-03-14T21:06:16-07:00",
-    "input_file": "welcome.utf8.md"
+    "input_file": {}
   }
 ]
