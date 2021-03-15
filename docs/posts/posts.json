@@ -1,7 +1,7 @@
 [
   {
     "path": "posts/2021-02-09-welcome/",
-    "title": "welcome",
+    "title": "Welcome Post",
     "description": "This is my first blog post!",
     "author": [
       {
@@ -13,7 +13,7 @@
     "categories": [],
     "contents": "\r\nI am very excited to build a new skill as I build this personal website. I started at Bren without any skills in coding and though it is often challenging learning something new that is so complex, it has been very rewarding. Please stay posted to see some of the projects I work on while at Bren and beyond.\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-03-14T20:50:11-07:00",
+    "last_modified": "2021-03-14T21:06:16-07:00",
     "input_file": "welcome.utf8.md"
   }
 ]
