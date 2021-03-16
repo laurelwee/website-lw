@@ -19,7 +19,7 @@
   {
     "path": "posts/2021-03-14-multivariate-analysis/",
     "title": "Multivariate Analysis",
-    "description": "For the final project in EMS 263 I created and ran a Multivariate Analysis model to find the watersheds in Southern Santa Barbara County that would be suitable for conservation.",
+    "description": "For the final project in EMS 263 I created and ran a Multivariate Analysis model to find the watersheds in Southern Santa Barbara County that would be suitable for conservation. Displayed below are pdfs of my final anaylsis. They include: 1) a map of watersheds that are suitable for conservation efforts, 2) a Multivariate Analysis Super Model that includes three other models as algorithms, 3) the riparian model/algorithm, 4) the viewshed model/algorithm, and 5) the developable land model/algorithm.",
     "author": [
       {
         "name": "Laurel Wee",
@@ -30,8 +30,8 @@
     "categories": [],
     "contents": "\r\n\r\n\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-03-14T21:48:33-07:00",
-    "input_file": {}
+    "last_modified": "2021-03-15T17:19:57-07:00",
+    "input_file": "multivariate-analysis.utf8.md"
   },
   {
     "path": "posts/2021-03-14-working-with-raster-data/",
