@@ -47,7 +47,7 @@
     "categories": [],
     "contents": "\r\n\r\n\r\n\r\nFigure 1: Map including ranked outcome for multivariate analysis of most suitable watersheds for conservation in Southern Santa Barbara County.\r\n\r\n\r\n\r\n\r\n\r\n\r\nFigure 2: Super model of multivariate analysis that includes three other submodels as algorithms. The output of this model provides ranks for each watershed from best suited (1) to worst suited (4) for conservation.\r\n\r\n\r\n\r\n\r\n\r\n\r\nFigure 3: Riparian submodel provides output of riparian score that ranks watersheds having sufficient riparian habitat as an NDVI from 0.2-0.5 and within 1000ft of a stream.\r\n\r\n\r\n\r\n\r\n\r\n\r\nFigure 4: Viewshed submodel provides an output of viewshed score that ranks watersheds on their scenic potential, being in sight from at least one oberservation point.\r\n\r\n\r\n\r\n\r\n\r\n\r\nFigure 5: Developable submodel provides an output of land that can be developed on including a less than 20% slope and is inexpensive private land.\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-03-16T14:39:58-07:00",
+    "last_modified": "2021-03-16T14:47:24-07:00",
     "input_file": "multivariate-analysis.utf8.md"
   },
   {
