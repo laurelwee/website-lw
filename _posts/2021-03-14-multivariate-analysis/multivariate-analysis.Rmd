@@ -11,35 +11,39 @@ output:
     self_contained: false
 ---
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, knitr.graphics.error = FALSE)
+knitr::opts_chunk$set(echo = FALSE)
 library(here)
 library(png)
 ```
 
 
-```{r echo = FALSE, message=FALSE, fig.align='center', out.width= "3507px", outheight= "2480px", fig.cap= "Map including ranked outcome for multivariate analysis of most suitable watersheds for conservation in Southern Santa Barbara County." }
+```{r message=FALSE, fig.align='center',  fig.cap= "Map including ranked outcome for multivariate analysis of most suitable watersheds for conservation in Southern Santa Barbara County." }
 knitr::include_graphics(here("images","HW4.png"))
+#out.width= "3507px", outheight= "2480px",
 ```
 
-```{r echo = FALSE, message=FALSE, fig.align='center', out.width= "1793px", outheight= "769px", fig.cap= "Super model of multivariate analysis that includes three other submodels as algorithms. The output of this model provides ranks for each watershed from best suited (1) to worst suited (4) for conservation." }
+```{r message=FALSE, fig.align='center',  fig.cap= "Super model of multivariate analysis that includes three other submodels as algorithms. The output of this model provides ranks for each watershed from best suited (1) to worst suited (4) for conservation." }
 knitr::include_graphics(here("images","mca_model.png"))
+#out.width= "1793px", outheight= "769px",
 ```
 
 
-```{r echo = FALSE, message=FALSE, fig.align='center', out.width= "1654px", outheight= "694px", fig.cap= "Riparian submodel provides output of riparian score that ranks watersheds having sufficient riparian habitat as an NDVI from 0.2-0.5 and within 1000ft of a stream." }
+```{r message=FALSE, fig.align='center',  fig.cap= "Riparian submodel provides output of riparian score that ranks watersheds having sufficient riparian habitat as an NDVI from 0.2-0.5 and within 1000ft of a stream." }
 knitr::include_graphics(here("images","riparian_model.png"))
+#out.width= "1654px", outheight= "694px",
 ```
 
 
-```{r echo = FALSE, message=FALSE, fig.align='center', out.width= "1431px", outheight= "521px", fig.cap= "Viewshed submodel provides an output of viewshed score that ranks watersheds on their scenic potential, being in sight from at least one oberservation point."}
+```{r message=FALSE, fig.align='center',  fig.cap= "Viewshed submodel provides an output of viewshed score that ranks watersheds on their scenic potential, being in sight from at least one oberservation point."}
 knitr::include_graphics(here("images","viewshed_model.png"))
+#out.width= "1431px", outheight= "521px",
 ```
 
 
-```{r echo = FALSE, message=FALSE, fig.align='center', out.width= "1401px", outheight= "911px", fig.cap= "Developable submodel provides an output of land that can be developed on including a less than 20% slope and is inexpensive private land."}
+```{r message=FALSE, fig.align='center', fig.cap= "Developable submodel provides an output of land that can be developed on including a less than 20% slope and is inexpensive private land."}
 knitr::include_graphics(here("images","developable_model.png"))
+#out.width= "1401px", outheight= "911px",
 ```
-
 
 
 
