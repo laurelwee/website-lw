@@ -17,6 +17,23 @@
     "input_file": {}
   },
   {
+    "path": "posts/2021-03-15-hierarchical-clustering/",
+    "title": "Hierarchical Clustering",
+    "description": "For an assignment in ESM 244 I explored the multivariate clustering of water chemistry among creeks in Santa Barbara Country. I used hierarchical clustering by complete linkage to create a dendrogram showing my findings.",
+    "author": [
+      {
+        "name": "Laurel Wee",
+        "url": {}
+      }
+    ],
+    "date": "2021-03-15",
+    "categories": [],
+    "contents": "\r\n\r\n\r\nexpand\r\n\r\n# Read in steam chemistry data from https://drive.google.com/file/d/16rYLBi-CgvjcWhOsX1SLdD9HHUMP9m2l/view?usp=sharing\r\nstream_chem <- read.csv(here(\"data\",\"sbc_lter_registered_stream_chemistry - sbc_lter_registered_stream_chemistry.csv\")) %>% \r\n  na_if(-999.0)%>% # turn `-999.0` values into NA\r\n  select(site_code, ends_with(\"uM\"))\r\n         #nh4_uM,no3_uM,po4_uM) # Select `site_code` mirco-molar concentration columns\r\n\r\n\r\n\r\n\r\n\r\nexpand\r\n\r\n# Make a new dataframe that includes the average of each measurement by site\r\nstream_avg <-stream_chem %>% \r\n  group_by(site_code) %>% \r\n  summarise_all(mean, na.rm=TRUE) %>% \r\n  mutate(site_name= # Add column with full site names from meta data https://portal.edirepository.org/nis/metadataviewer?packageid=knb-lter-sbc.6.16\r\n         case_when(\r\n           site_code == \"AB00\" ~ \"Arroyo Burro\",\r\n           site_code == \"AT07\" ~ \"Atascadero Creek\",\r\n           site_code == \"BC02\" ~ \"Bell Canyon Creek\",\r\n           site_code == \"DV01\" ~ \"Devereaux Creek\",\r\n           site_code == \"GV01\" ~ \"Gaviota\",\r\n           site_code == \"HO00\" ~ \"Arroyo Hondo\",\r\n           site_code == \"MC00\" ~ \"Mission Creek (Montecito)\",\r\n           site_code == \"MC06\" ~ \"Mission Creek (Rocky Nook)\",\r\n           site_code == \"ON02\" ~ \"San Onofre Creek\",\r\n           site_code == \"RG01\" ~ \"Refugio Creek\",\r\n           site_code == \"RS02\" ~ \"Rattlesnake Creek\",\r\n           site_code == \"SP02\" ~ \"San Pedro Creek\",\r\n           site_code == \"TO02\" ~ \"Tecolote Creek\"))\r\n\r\n\r\n\r\n# Scale the averaged dataframe\r\nstream_scale <- stream_avg %>% \r\n  select(ends_with(\"uM\")) %>% \r\n  scale()\r\n# Make `site_code` the rownames of the averaged data frame\r\nrownames(stream_scale)<-stream_avg$site_name \r\n\r\n# Make a subset of data with only the sites that have all the uM data recorded\r\nstream_full<- stream_scale %>% \r\n  na.omit()\r\n\r\n\r\n\r\n\r\n\r\nexpand\r\n\r\n# Compute dissimilarity values (Euclidean distances):\r\neuc_distance <- dist(stream_full, method = \"euclidean\")\r\n\r\n#View(euc_distance)\r\n\r\n# Hierarchical clustering (complete linkage)\r\nhc_complete <- hclust(euc_distance, method = \"complete\" ) \r\n\r\n# Make a dendrogram visual\r\nggdendrogram(hc_complete,\r\n             rotate = TRUE)+\r\n  theme_minimal()+\r\n  theme(panel.background=element_rect(\"lightblue1\"))+\r\n  labs(x=\"Creek Site\", y=\"Height\", title=\"Water Chemistry of Santa Barbara County Creeks (WEE)\")\r\n\r\n\r\n\r\n\r\nSummary\r\nOnly nine out of 13 creek sites in Santa Barbara County had micro molar concentration data for water chemistry across eight variables. Mission Creek at Montecito and Arroyo Burro had the least dissimilarities among all the sites while San Onofre Creek and Gaviota has the greatest dissimilarities.\r\nData Citation:\r\nSanta Barbara Coastal LTER and J. Melack. 2019. SBC LTER: Land: Stream chemistry in the Santa Barbara Coastal drainage area, ongoing since 2000 ver 16. Environmental Data Initiative. https://doi.org/10.6073/pasta/67a558a24ceed9a0a5bf5e46ab841174.\r\n\r\n\r\n\r\n",
+    "preview": "posts/2021-03-15-hierarchical-clustering/hierarchical-clustering_files/figure-html5/unnamed-chunk-3-1.png",
+    "last_modified": "2021-03-15T17:39:16-07:00",
+    "input_file": "hierarchical-clustering.utf8.md"
+  },
+  {
     "path": "posts/2021-03-14-multivariate-analysis/",
     "title": "Multivariate Analysis",
     "description": "For the final project in EMS 263 I created and ran a Multivariate Analysis model to find the watersheds in Southern Santa Barbara County that would be suitable for conservation. Displayed below are pdfs of my final anaylsis. They include: 1) a map of watersheds that are suitable for conservation efforts, 2) a Multivariate Analysis Super Model that includes three other models as algorithms, 3) the riparian model/algorithm, 4) the viewshed model/algorithm, and 5) the developable land model/algorithm.",
