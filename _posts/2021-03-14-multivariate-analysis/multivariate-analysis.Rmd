@@ -1,7 +1,7 @@
 ---
 title: "Multivariate Analysis"
 description: |
-  For the final project in EMS 263 I created and ran a Multivariate Analysis model to find the watersheds in Southern Santa Barbara County that would be suitable for conservation. Displayed below are pdfs of my final anaylsis. They include: 1) a map of watersheds that are suitable for conservation efforts, 2) a Multivariate Analysis Super Model that includes three other models as algorithms, 3) the riparian model/algorithm, 4) the viewshed model/algorithm, and 5) the developable land model/algorithm.
+  For the final project in EMS 263 I created and ran a Multivariate Analysis model to find the watersheds in Southern Santa Barbara County that would be suitable for conservation. Displayed below are images of my final anaylsis. They include: 1) a map of watersheds that are suitable for conservation efforts, 2) a Multivariate Analysis Super Model that includes three other models as algorithms, 3) the riparian model/algorithm, 4) the viewshed model/algorithm, and 5) the developable land model/algorithm.
 author:
   - name: Laurel Wee
     url: {}
@@ -16,14 +16,29 @@ library(here)
 ```
 
 
-```{r echo = FALSE, message=FALSE, fig.align='center', fig.pos='H', out.width = "1100px", out.height = "800px"}
+```{r echo = FALSE, message=FALSE, fig.align='center', fig.cap = "Map including ranked outcome for multivariate analysis of most suitable watersheds for conservation in Southern Santa Barbara County."}
+#, out.width = "1100px", out.height = "800px"
+knitr::include_graphics(here("data","HW4.png"))
+```
 
-knitr::include_graphics(here("data","HW4Wee.pdf"))
 
-knitr::include_graphics(here("data","mva_model.pdf"))
-knitr::include_graphics(here("data","riparian_model.pdf"))
-knitr::include_graphics(here("data","viewshed_model.pdf"))
-knitr::include_graphics(here("data","developable_model.pdf"))
+```{r echo = FALSE, message=FALSE, fig.align='center', fig.cap= "Super model of multivariate analysis that includes three other submodels as algorithms. The output of this model provides ranks for each watershed from best suited (1) to worst suited (4) for conservation." }
+knitr::include_graphics(here("data","mca_model.png"))
+```
+
+
+```{r echo = FALSE, message=FALSE, fig.align='center',fig.cap= "Riparian submodel provides output of riparian score that ranks watersheds having sufficient riparian habitat as an NDVI from 0.2-0.5 and within 1000ft of a stream." }
+knitr::include_graphics(here("data","riparian_model.png"))
+```
+
+
+```{r echo = FALSE, message=FALSE, fig.align='center', fig.cap= "Viewshed submodel provides an output of viewshed score that ranks watersheds on their scenic potential, being in sight from at least one oberservation point."}
+knitr::include_graphics(here("data","viewshed_model.png"))
+```
+
+
+```{r echo = FALSE, message=FALSE, fig.align='center', fig.cap= "Developable submodel provides an output of land that can be developed on including a less than 20% slope and is inexpensive private land."}
+knitr::include_graphics(here("data","developable_model.png"))
 ```
 
 
