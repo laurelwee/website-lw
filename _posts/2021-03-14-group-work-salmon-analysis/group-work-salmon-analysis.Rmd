@@ -25,15 +25,9 @@ library(patchwork)
 This summary explores adult fish passage recorded from January 2001 to December 2012 at the Willamette Falls fish ladder on the Willamette River (Oregon). Data were shared by and accessed from Columbia River DART (Data Access in Real Time). 
 
 
-## Data Citation
+#### Data Citation
 
 Looking towards tailspar from yarder at Willamette Falls. Source: (Forest Engineering Inc., Copyright, 1996)
-![Looking towards tailspar from yarder at Willamette Falls](path= here("data","fish.png")
-
-Map of Willamette Falls. Source: Portland District, U.S. Army Corps of Engineers, 2021. 
-![Looking towards tailspar from yarder at Willamette Falls](path= here("data","map.png")
-
-## Data Citation
 
 
 ## Willametter Falls fish passage {.tabset}
